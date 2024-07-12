@@ -12,7 +12,12 @@ class ArticleController {
     }
 
     async update(req, res, next) {
-
+        try {
+            const articleModified = await articleService.update(req.params.id, req.body);
+            res.json(articleModified);
+        } catch (err) {
+            next(err);
+        }
     }
 
     async delete(req, res, next) {
