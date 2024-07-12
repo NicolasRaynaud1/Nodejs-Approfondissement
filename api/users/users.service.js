@@ -1,4 +1,5 @@
 const User = require("./users.model");
+const Article = require('../articles/articles.schema');
 const bcrypt = require("bcrypt");
 
 class UserService {
@@ -28,6 +29,16 @@ class UserService {
       return false;
     }
     return user._id;
+  }
+
+  async getArticles(userId) {
+    console.log(userId);
+    return await Article.find().populate({
+      path: 'user',
+      match: { _id: userId },
+      select: "-password"
+    }).
+      exec();
   }
 }
 

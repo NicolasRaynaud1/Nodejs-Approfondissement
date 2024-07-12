@@ -73,6 +73,15 @@ class UsersController {
       next(err);
     }
   }
+
+  async getArticles(req, res, next) {
+    try {
+      const articles = await usersService.getArticles(req.params.userid);
+      res.json(articles);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UsersController();
