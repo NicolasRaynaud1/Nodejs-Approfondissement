@@ -15,11 +15,10 @@ const io = new Server(server);
 
 io.on("connection", (socket) => {
   console.log("a user connected");
-  /*socket.on("my_event", (data) => {
-    console.log(data);
-  });
-  io.emit("event_from_server", { test: "foo" });*/
 });
+
+
+
 
 app.use((req, res, next) => {
   req.io = io;
