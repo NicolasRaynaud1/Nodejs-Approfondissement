@@ -1,4 +1,5 @@
 const NotFoundError = require("../../errors/not-found");
+const ForbiddenError = require('../../errors/forbidden');
 const articleService = require('./articles.service');
 
 class ArticleController {
@@ -14,6 +15,11 @@ class ArticleController {
 
     async update(req, res, next) {
         try {
+            console.log(req.user.role);
+            if (req.user.role != "admin") {
+                throw new ForbiddenError;
+            }
+
             const articleModified = await articleService.update(req.params.id, req.body);
             req.io.emit("article:update", { articleModified });
             res.json(articleModified);
@@ -24,6 +30,11 @@ class ArticleController {
 
     async delete(req, res, next) {
         try {
+            console.log(req.user.role);
+            if (req.user.role != "admin") {
+                throw new ForbiddenError;
+            }
+
             const id = req.params.id;
             await articleService.delete(id);
             req.io.emit("article:delete", { id });
