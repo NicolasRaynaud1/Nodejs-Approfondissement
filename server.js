@@ -33,7 +33,6 @@ app.post("/login", usersController.login);
 
 app.use("/api/articles", authMiddleware, articleRouter);
 
-
 app.use("/", express.static("public"));
 
 app.use((req, res, next) => {

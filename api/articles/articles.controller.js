@@ -1,11 +1,17 @@
 const NotFoundError = require("../../errors/not-found");
 const ForbiddenError = require('../../errors/forbidden');
 const articleService = require('./articles.service');
+const UnauthorizedError = require("../../errors/unauthorized");
 
 class ArticleController {
     async create(req, res, next) {
         try {
-            const article = await articleService.create(req.body);
+            const articleToCreate = {
+                title: req.body.title,
+                content: req.body.content,
+                user: req.user.id
+            }
+            const article = await articleService.create(articleToCreate);
             req.io.emit("article:create", { article });
             res.status(201).json(article);
         } catch (error) {
