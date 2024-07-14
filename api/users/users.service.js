@@ -28,7 +28,8 @@ class UserService {
     if (!bool) {
       return false;
     }
-    return user._id;
+    user.password = undefined;
+    return user;
   }
 
   async getArticles(userId) {

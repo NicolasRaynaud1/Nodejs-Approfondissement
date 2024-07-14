@@ -10,7 +10,8 @@ module.exports = async (req, res, next) => {
       throw "not token";
     }
     const jwtInfos = jwt.verify(token, config.secretJwtToken);
-    req.user = await userService.get(jwtInfos.userId);
+    req.user = jwtInfos.user;
+
     next();
   } catch (message) {
     next(new UnauthorizedError(message));

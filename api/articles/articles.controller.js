@@ -9,7 +9,7 @@ class ArticleController {
             const articleToCreate = {
                 title: req.body.title,
                 content: req.body.content,
-                user: req.user.id // indiquer l'id de l'utilisateur connecté qui crée l'article
+                user: req.user._id // indiquer l'id de l'utilisateur connecté qui crée l'article
             }
             const article = await articleService.create(articleToCreate);
 
@@ -30,7 +30,6 @@ class ArticleController {
             }
 
             const articleModified = await articleService.update(req.params.id, req.body);
-
             req.io.emit("article:update", { articleModified }); // Emettre un event temps réel
 
             res.json(articleModified);
