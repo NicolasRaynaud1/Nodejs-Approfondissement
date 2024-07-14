@@ -32,7 +32,6 @@ class UserService {
   }
 
   async getArticles(userId) {
-    console.log(userId);
     return await Article.find().populate({
       path: 'user',
       match: { _id: userId },

@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/users/:userid/articles", usersController.getArticles);
+app.get("/api/users/:userid/articles", usersController.getArticles); // route avant le middleware d'auth pour la garder publique
 app.use("/api/users", authMiddleware, userRouter);
 app.post("/login", usersController.login);
 

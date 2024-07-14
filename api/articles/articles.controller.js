@@ -9,11 +9,14 @@ class ArticleController {
             const articleToCreate = {
                 title: req.body.title,
                 content: req.body.content,
-                user: req.user.id
+                user: req.user.id // indiquer l'id de l'utilisateur connecté qui crée l'article
             }
             const article = await articleService.create(articleToCreate);
-            req.io.emit("article:create", { article });
+
+            req.io.emit("article:create", { article }); // Emettre un event temps réel
+
             res.status(201).json(article);
+
         } catch (error) {
             next(error);
         }
@@ -21,13 +24,15 @@ class ArticleController {
 
     async update(req, res, next) {
         try {
-            console.log(req.user.role);
+            // l'utilisateur doit être un admin pour mettre à jour un article
             if (req.user.role != "admin") {
                 throw new ForbiddenError;
             }
 
             const articleModified = await articleService.update(req.params.id, req.body);
-            req.io.emit("article:update", { articleModified });
+
+            req.io.emit("article:update", { articleModified }); // Emettre un event temps réel
+
             res.json(articleModified);
         } catch (err) {
             next(err);
@@ -36,14 +41,16 @@ class ArticleController {
 
     async delete(req, res, next) {
         try {
-            console.log(req.user.role);
+            // l'utilisateur doit être un admin pour supprimer un article
             if (req.user.role != "admin") {
                 throw new ForbiddenError;
             }
 
             const id = req.params.id;
             await articleService.delete(id);
-            req.io.emit("article:delete", { id });
+
+            req.io.emit("article:delete", { id }); // Emettre un event temps réel
+
             res.status(204).send();
         } catch (err) {
             next(err);
